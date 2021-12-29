@@ -13,6 +13,13 @@
 
 <body>
     <h2>Daftar Pelanggan</h2>
+    <form method="GET" action="/pelanggan">
+
+    <input type="text" name="src" /> <br/>
+    <input type="submit" value="Cari">
+
+    </form>
+    Kelamin : {{ $kelamin }}<br />
     <div><a href="{{ route('pelanggan.create') }}">Tambah Pelanggan</a></div>
 
     <table>
@@ -26,20 +33,27 @@
         @foreach($daftarPelanggan as $pelanggan)
         <tr>
             <td>
-                <a href="/pelanggan/1">Lihat<a /> | <a href="/pelanggan/1/edit">Ubah<a /> |
-                        <form method="POST" action="/pelanggan/1">
+                <a href="/pelanggan/{{ $pelanggan["id"] }}">Lihat<a /> | <a href="/pelanggan/{{ $pelanggan["id"] }}/edit">Ubah<a /> |
+                        <form method="POST" action="/pelanggan/{{ $pelanggan["id"] }}">
                             @csrf
                             @method('DELETE')<button type="submit">Hapus<button />
                         </form>
             </td>
             <td>{{ $pelanggan["nama"] }}</td>
             <td>
-                {{ $pelanggan["kelamin"] == "P" ? "Laki-laki" : "Wanita" }}
+                {{ $pelanggan["kelamin"] == "L" ? "Laki-laki" : "Wanita" }}
             </td>
             <td>{{ $pelanggan["phone"] }}</td>
             <td>{{ $pelanggan["alamat"] }}</td>
         </tr>
         @endforeach
+        @if(count($daftarPelanggan) == 0)
+        <tr>
+            <td colspan="5">
+                Tidak data pelanggan
+            </td>
+        </tr>
+        @endif
 
     </table>
 

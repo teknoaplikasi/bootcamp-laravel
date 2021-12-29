@@ -13,9 +13,10 @@
 
 <body>
     <h2>Detail Pelanggan</h2>
-    <p>Nama : Agung</p><br />
-    <p>No Telepon : 081xxxxxxx</p><br />
-    <p>Alamat : Demak</p><br />
+    <p>Nama : {{ $pelanggan->nama }}</p><br />
+    <p>Kelamin : {{ $pelanggan->kelamin == "L" ? "Laki-laki" : "Perempuan" }}</p><br />
+    <p>No Telepon : {{ $pelanggan->phone }}</p><br />
+    <p>Alamat : {{ $pelanggan->alamat }}</p><br />
 
 </body>
 

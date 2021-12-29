@@ -13,14 +13,19 @@
 
 <body>
     <h2>Ubah Pelanggan</h2>
-    <form method="POST" action="/pelanggan/1">
+    <form method="POST" action="/pelanggan/{{ $pelanggan->id }}">
         @csrf
         @method('PUT')
 
-        ID: {{ $id }} </br>
-        Nama :<input type="text" name="nama" /><br />
-        No Telepon :<input type="text" name="phone" /><br />
-        Alamat :<textarea name="alamat"></textarea><br />
+        ID: {{ $pelanggan->id }} </br>
+        Nama :<input type="text" name="nama" value="{{ $pelanggan->nama }}" /><br />
+        Jenis Kelamin: <br />
+        <input type="radio" id="l" name="kelamin" value="L" {{ $pelanggan->kelamin == "L" ? "checked" : "" }}>
+        <label for="l">Laki-laki</label><br>
+        <input type="radio" id="p" name="kelamin" value="P" {{ $pelanggan->kelamin == "P" ? "checked" : "" }}>
+        <label for="p">Perempuan</label><br>
+        No Telepon :<input type="text" name="phone" value="{{ $pelanggan->phone }}"/><br />
+        Alamat :<textarea name="alamat">{{ $pelanggan->alamat }}</textarea><br />
         <input type="submit" name="Submit">
 
     </form>
