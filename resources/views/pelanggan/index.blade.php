@@ -28,6 +28,7 @@
             <th>Nama</th>
             <th>Kelamin</th>
             <th>No Telepon</th>
+            <th>Provinsi</th>
             <th>ALamat</th>
         </tr>
         @foreach($daftarPelanggan as $pelanggan)
@@ -44,6 +45,7 @@
                 {{ $pelanggan["kelamin"] == "L" ? "Laki-laki" : "Wanita" }}
             </td>
             <td>{{ $pelanggan["phone"] }}</td>
+            <td>{{ $pelanggan["province_name"] }}</td>
             <td>{{ $pelanggan["alamat"] }}</td>
         </tr>
         @endforeach
@@ -56,6 +58,9 @@
         @endif
 
     </table>
+
+    {{ $daftarPelanggan->links() }}
+
 
 </body>
 

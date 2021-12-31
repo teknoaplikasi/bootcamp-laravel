@@ -25,6 +25,11 @@
         <input type="radio" id="p" name="kelamin" value="P" {{ $pelanggan->kelamin == "P" ? "checked" : "" }}>
         <label for="p">Perempuan</label><br>
         No Telepon :<input type="text" name="phone" value="{{ $pelanggan->phone }}"/><br />
+        Provinsi :<select name="province_id">
+            @foreach($provinces as $province)
+            <option value="{{ $province->id }}">{{ $province->province_name }}</option>
+            @endforeach
+        <select><br/>
         Alamat :<textarea name="alamat">{{ $pelanggan->alamat }}</textarea><br />
         <input type="submit" name="Submit">
 

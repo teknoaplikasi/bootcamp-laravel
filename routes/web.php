@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\KeluhanController;
 use App\Http\Controllers\PelangganController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/test', function () {
+    $sql = "SELECT * FROM pelanggan WHERE id = :id";
+    $result = DB::selectOne($sql, ["id" => 1]);
+    dd($result->nama);
     return view('welcome');
 });
 

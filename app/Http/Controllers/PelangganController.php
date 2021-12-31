@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
+use App\Models\Province;
 use Illuminate\Http\Request;
 
 class PelangganController extends Controller
@@ -12,8 +13,11 @@ class PelangganController extends Controller
        
         $input = $request->all();
 
-        $dataPelanggan = Pelanggan::select("*");
+        // SELECT * FROM 
+        $dataPelanggan = Pelanggan::select(["pelanggan.*", "provinces.province_name"])
+        ->leftJoin('provinces', 'pelanggan.province_id', '=', 'provinces.id');
 
+        // where kelamin = ?
         if(isset($input["kelamin"])) {
             $dataPelanggan->where("kelamin", $input["kelamin"]);
         }
@@ -22,20 +26,28 @@ class PelangganController extends Controller
             $dataPelanggan->where("nama", "like", "%".$input["src"]."%");
         }
 
+
         $data = [
             "kelamin" => $input["kelamin"] ?? "",
-            "daftarPelanggan" => $dataPelanggan->get()
+            "daftarPelanggan" => $dataPelanggan->paginate(10)
         ];
         return view('pelanggan.index', $data);
     }
 
     public function create()
     {
-        return view('pelanggan.create');
+        $data = [
+            "provinces" => Province::all()
+        ];
+        return view('pelanggan.create', $data);
     }
 
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'nama' => 'required|min:5|max:100',
+            'kelamin' => 'required'
+        ]);
         $input = $request->except(["_token"]);
         
         // INSERT INTO pelanggan(nama,kelamin,alamat) VALUES('');
@@ -54,7 +66,6 @@ class PelangganController extends Controller
     public function show($id)
     {
         $data = [
-            // SELECT * FROM pelanggan where id=$id
             "pelanggan" => Pelanggan::find($id)
         ];
         return view('pelanggan.show', $data);
@@ -63,7 +74,7 @@ class PelangganController extends Controller
     public function edit($id)
     {
         $data = [
-            // SELECT * FROM pelanggan where id=$id
+            "provinces" => Province::all(),
             "pelanggan" => Pelanggan::find($id)
         ];
         return view('pelanggan.edit', $data);
@@ -77,6 +88,7 @@ class PelangganController extends Controller
         $pelanggan->phone = $input["phone"] ?? "";
         $pelanggan->kelamin = $input["kelamin"] ?? "L";
         $pelanggan->alamat = $input["alamat"] ?? "";
+        $pelanggan->province_id = $input["province_id"] ?? null;
         // UPDATE pelanggan SET ... WHERE id = $id
         $pelanggan->save();
         
@@ -87,6 +99,10 @@ class PelangganController extends Controller
     {
         // SELECT * FROM pelanggan where id=$id
         $pelanggan = Pelanggan::find($id);
+
+        if(is_null($pelanggan)) {
+            return 'Pelanggan tidak terdaftar dalam database';
+        }
         // DELETE pelanggan where id=$id
         $pelanggan->delete();
         return 'Pelanggan berhasil dihapus';
