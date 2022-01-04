@@ -10,20 +10,20 @@ class PelangganController extends Controller
 {
     public function index(Request $request)
     {
-       
+
         $input = $request->all();
 
         // SELECT * FROM 
         $dataPelanggan = Pelanggan::select(["pelanggan.*", "provinces.province_name"])
-        ->leftJoin('provinces', 'pelanggan.province_id', '=', 'provinces.id');
+            ->leftJoin('provinces', 'pelanggan.province_id', '=', 'provinces.id');
 
         // where kelamin = ?
-        if(isset($input["kelamin"])) {
+        if (isset($input["kelamin"])) {
             $dataPelanggan->where("kelamin", $input["kelamin"]);
         }
 
         if (isset($input["src"])) {
-            $dataPelanggan->where("nama", "like", "%".$input["src"]."%");
+            $dataPelanggan->where("nama", "like", "%" . $input["src"] . "%");
         }
 
 
@@ -49,7 +49,7 @@ class PelangganController extends Controller
             'kelamin' => 'required'
         ]);
         $input = $request->except(["_token"]);
-        
+
         // INSERT INTO pelanggan(nama,kelamin,alamat) VALUES('');
         $pelanggan = new Pelanggan();
         $pelanggan->nama = $input["nama"] ?? "";
@@ -59,13 +59,14 @@ class PelangganController extends Controller
         $pelanggan->save();
 
         // $pelanggan = Pelanggan::create($input);
-        
-        return 'Pelanggan dengan nama '. $pelanggan->nama .', berhasil ditambahkan';
+
+        return redirect("/pelanggan");
     }
 
     public function show($id)
     {
         $data = [
+            "provinces" => Province::all(), 
             "pelanggan" => Pelanggan::find($id)
         ];
         return view('pelanggan.show', $data);
@@ -91,8 +92,8 @@ class PelangganController extends Controller
         $pelanggan->province_id = $input["province_id"] ?? null;
         // UPDATE pelanggan SET ... WHERE id = $id
         $pelanggan->save();
-        
-        return 'Pelanggan berhasil diubah';
+
+        return redirect('/pelanggan');
     }
 
     public function destroy($id)
@@ -100,7 +101,7 @@ class PelangganController extends Controller
         // SELECT * FROM pelanggan where id=$id
         $pelanggan = Pelanggan::find($id);
 
-        if(is_null($pelanggan)) {
+        if (is_null($pelanggan)) {
             return 'Pelanggan tidak terdaftar dalam database';
         }
         // DELETE pelanggan where id=$id

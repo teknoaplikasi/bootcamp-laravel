@@ -20,6 +20,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/admin', function () {
+    return view('home');
+});
+
+Route::get('/admin/pelanggan', function () {
+    return view('admin.pelanggan');
+});
+
 Route::get('/test', function () {
     $sql = "SELECT * FROM pelanggan WHERE id = :id";
     $result = DB::selectOne($sql, ["id" => 1]);
