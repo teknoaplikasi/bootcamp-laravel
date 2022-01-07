@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KeluhanController;
 use App\Http\Controllers\PelangganController;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin', function () {
-    return view('home');
-});
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'actionLogin']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 Route::get('/admin/pelanggan', function () {
     return view('admin.pelanggan');
@@ -53,5 +55,12 @@ Route::post('/keluhan', [KeluhanController::class, 'action']);
 Route::put('/action-formulir', function () {
     return 'Formulir Berhasil diubah';
 });
-
-Route::resource('/pelanggan', PelangganController::class);
+Route::group(["middleware" => "auth"], function() {
+    Route::resource('/pelanggan', PelangganController::class);
+    Route::get("/supplier", function() {
+        return view("supplier");
+    });
+    Route::get("/dashboard", function() {
+        return view("dashboard");
+    });
+});
