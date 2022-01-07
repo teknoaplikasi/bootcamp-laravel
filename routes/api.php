@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\PelangganController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+// Route::get("/pelanggan", [PelangganController::class, "index"]);
+// Route::get("/pelanggan/{id}", [PelangganController::class, "show"]);
+// Route::post("/pelanggan", [PelangganController::class, "store"]);
+// Route::patch("/pelanggan/{id}", [PelangganController::class, "update"]);
+// Route::delete("/pelanggan/{id}", [PelangganController::class, "destroy"]);
+
+Route::resource('/pelanggan', PelangganController::class);
+
