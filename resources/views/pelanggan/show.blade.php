@@ -41,6 +41,12 @@ ID : {{ $pelanggan->id }}
             {{ $pelanggan->alamat }}
             </textarea>
         </div>
+        <div class="form-group">
+            <label for="profile">Profile</label>
+            @if($pelanggan->image_profile != null)
+            <img src="/upload/{{ $pelanggan->image_profile }}" />
+            @endif
+        </div>
 
     </div>
 

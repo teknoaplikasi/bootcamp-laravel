@@ -13,7 +13,7 @@ class PelangganController extends Controller
 
         $input = $request->all();
 
-        // SELECT * FROM 
+        // SELECT * FROM
         $dataPelanggan = Pelanggan::select(["pelanggan.*", "provinces.province_name"])
             ->leftJoin('provinces', 'pelanggan.province_id', '=', 'provinces.id');
 
@@ -50,8 +50,15 @@ class PelangganController extends Controller
         ]);
         $input = $request->except(["_token"]);
 
-        // INSERT INTO pelanggan(nama,kelamin,alamat) VALUES('');
         $pelanggan = new Pelanggan();
+        if ($request->hasFile('image_profile')) {
+
+            $pelanggan->image_profile = $request->file("image_profile")->store("profile");
+        }
+
+
+        // INSERT INTO pelanggan(nama,kelamin,alamat) VALUES('');
+
         $pelanggan->nama = $input["nama"] ?? "";
         $pelanggan->phone = $input["phone"] ?? "";
         $pelanggan->kelamin = $input["kelamin"] ?? "L";
@@ -66,7 +73,7 @@ class PelangganController extends Controller
     public function show($id)
     {
         $data = [
-            "provinces" => Province::all(), 
+            "provinces" => Province::all(),
             "pelanggan" => Pelanggan::find($id)
         ];
         return view('pelanggan.show', $data);

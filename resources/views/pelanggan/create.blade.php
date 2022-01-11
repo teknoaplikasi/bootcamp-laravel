@@ -1,7 +1,7 @@
 @extends("template.index")
 
 @section("content")
-<form method="POST" action="{{ route('pelanggan.store') }}">
+<form method="POST" action="{{ route('pelanggan.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="card">
         <div class="card-header">
@@ -45,6 +45,11 @@
                 <textarea name="alamat" class="form-control" id="alamat" placeholder="Masukan Alamat Pelanggan">
 
                 </textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Profile</label>
+                <input type="file" name="image_profile" class="form-control">
             </div>
 
         </div>
