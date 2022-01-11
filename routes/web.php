@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KeluhanController;
 use App\Http\Controllers\PelangganController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/lang', function () {
+    return __("auth.failed");
+});
+
+Route::get('/setter/{lang}', function ($lang) {
+    session(['lang' => $lang]);
+    return $lang;
 });
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -55,12 +66,12 @@ Route::post('/keluhan', [KeluhanController::class, 'action']);
 Route::put('/action-formulir', function () {
     return 'Formulir Berhasil diubah';
 });
-Route::group(["middleware" => "auth"], function() {
+Route::group(["middleware" => "auth"], function () {
     Route::resource('/pelanggan', PelangganController::class);
-    Route::get("/supplier", function() {
+    Route::get("/supplier", function () {
         return view("supplier");
     });
-    Route::get("/dashboard", function() {
+    Route::get("/dashboard", function () {
         return view("dashboard");
     });
 });
